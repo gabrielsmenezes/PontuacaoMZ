@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PontuacaoMZ
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  Ferramenta que dá uma pontuação para seus jogadores para cada posição
 // @author       Gabriel Menezes (mz_seds)
 // @match        https://www.managerzone.com/*
