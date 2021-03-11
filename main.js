@@ -10,8 +10,11 @@
 
 (function() {
     'use strict';
-    var players_container = document.getElementById("players_container");
-    var players_html = players_container.children;
+    setTimeout(() => {
+
+        var players_container = document.getElementById("players_container");
+        var players_html = players_container.children;
+
 
 
     var pesos =
@@ -139,12 +142,15 @@
     function buscaHabilidadesDoJogador(allskillval) {
         let contador = 0
         let jogador = {}
-        habilidades.forEach(habilidade => {
-            jogador[habilidade] = allskillval[contador++].innerText.replace(/[()]/g, "")
-        })
+        for (var i = 0; i < allskillval.length; i++) {
+            let habilidade = habilidades[contador]
+            if (!allskillval[i].innerText.includes("%")){
+                jogador[habilidade] = allskillval[i].innerText.replace(/[()]/g, "")
+                contador++
+            }
+        }
         return jogador
     }
-
 
     for (var i = 0; i < players_html.length; i++) {
         var player = players_html[i];
@@ -153,7 +159,11 @@
 
         var allskillval = player.getElementsByClassName("skillval")
 
+
+
         var jogador = buscaHabilidadesDoJogador(allskillval)
+
+
 
         var goleiro = calcularNotaPorPosicao(jogador, "Goleiro")
         var zagueiro = calcularNotaPorPosicao(jogador, "Zagueiro")
@@ -162,15 +172,35 @@
         var ponta = calcularNotaPorPosicao(jogador, "Ponta")
         var atacante = calcularNotaPorPosicao(jogador, "Atacante")
 
+        const posicoes = [
+            {nome: "Goleiro", nota: goleiro},
+            {nome:"Zagueiro", nota: zagueiro},
+            {nome:"Ancora", nota: ancora},
+            {nome:"Meio", nota: meio},
+            {nome:"Ponta", nota: ponta},
+            {nome:"Atacante", nota:atacante }
+        ]
+
+        posicoes.sort((a,b) => (a.nota > b.nota) ? -1: 1)
+
+
+        var stringNota = ""
+
+        posicoes.forEach(posicao => {
+            stringNota = stringNota + `${posicao.nome}: ${posicao.nota.toFixed(3)} || `
+        })
+
         var nota = document.createElement("span");
         var novaLinha = document.createElement("br");
-        var stringNota = `Goleiro: ${goleiro.toFixed(3)} || Zagueiro: ${zagueiro.toFixed(3)} || Ancora: ${ancora.toFixed(3)} || Meio: ${meio.toFixed(3)} || Ponta: ${ponta.toFixed(3)} || Atacante: ${atacante.toFixed(3)}`
 
         nota.textContent = stringNota
 
-        header.appendChild(novaLinha);
-        header.appendChild(nota);
+        if (!window.location.href.includes("transfer")) header.appendChild(novaLinha)
+        header.appendChild(nota)
 
     }
+
+        }, 10000)
+
 
 })();
